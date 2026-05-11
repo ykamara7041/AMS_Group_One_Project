@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Home Automation System - Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0e1a;--surface:#111827;--card:#1e293b;--accent:#6366f1;--accent2:#8b5cf6;--cyan:#22d3ee;--green:#10b981;--orange:#f59e0b;--red:#ef4444;--text:#f1f5f9;--muted:#94a3b8;--border:rgba(99,102,241,.2)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh;width:100vw}
+.slide{display:none;flex-direction:column;justify-content:center;align-items:center;height:100vh;width:100vw;padding:60px 80px;position:relative;animation:fadeIn .6s ease}
+.slide.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+.bg-glow{position:fixed;width:500px;height:500px;border-radius:50%;filter:blur(120px);opacity:.15;pointer-events:none;z-index:0}
+.glow1{background:var(--accent);top:-100px;left:-100px}
+.glow2{background:var(--cyan);bottom:-100px;right:-100px}
+.slide>*{position:relative;z-index:1}
+h1{font-size:3.2rem;font-weight:800;line-height:1.2;margin-bottom:16px;background:linear-gradient(135deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:2.4rem;font-weight:700;margin-bottom:24px;background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h3{font-size:1.3rem;font-weight:600;color:var(--cyan);margin-bottom:12px;text-transform:uppercase;letter-spacing:2px}
+p{font-size:1.15rem;color:var(--muted);line-height:1.7;max-width:700px}
+.subtitle{font-size:1.4rem;color:var(--muted);font-weight:300;margin-bottom:40px}
+.tag{display:inline-block;padding:6px 16px;border-radius:20px;font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--border);color:var(--accent);margin-bottom:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:30px;width:100%;max-width:1100px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;max-width:1100px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .3s ease}
+.card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 8px 30px rgba(99,102,241,.15)}
+.card h4{font-size:1.1rem;font-weight:700;margin-bottom:8px;color:#fff}
+.card p{font-size:.95rem;color:var(--muted);line-height:1.6}
+.card .icon{font-size:2rem;margin-bottom:12px}
+.table-wrap{width:100%;max-width:1000px;overflow:hidden;border-radius:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse}
+th{background:rgba(99,102,241,.15);padding:14px 20px;text-align:left;font-size:.85rem;font-weight:600;color:var(--cyan);text-transform:uppercase;letter-spacing:1px}
+td{padding:12px 20px;border-top:1px solid rgba(255,255,255,.05);font-size:.95rem;color:var(--muted)}
+tr:hover td{background:rgba(99,102,241,.05)}
+.code-block{background:#0d1117;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:24px 28px;font-family:'Courier New',monospace;font-size:.9rem;color:#e6edf3;max-width:900px;width:100%;overflow-x:auto;white-space:pre;line-height:1.7}
+.code-block .kw{color:#ff7b72}
+.code-block .fn{color:#d2a8ff}
+.code-block .str{color:#a5d6ff}
+.code-block .cm{color:#8b949e}
+.members-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1000px}
+.member{text-align:center;padding:30px 20px;background:var(--card);border-radius:16px;border:1px solid var(--border);transition:all .3s}
+.member:hover{border-color:var(--cyan);transform:translateY(-4px)}
+.member .avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;margin:0 auto 16px;color:#fff}
+.member h4{font-size:1rem;color:#fff;margin-bottom:4px}
+.member p{font-size:.85rem;color:var(--muted)}
+.nav{position:fixed;bottom:30px;right:40px;display:flex;gap:12px;z-index:99}
+.nav button{width:48px;height:48px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:#fff;font-size:1.2rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.nav button:hover{background:var(--accent);border-color:var(--accent)}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--cyan));transition:width .4s ease;z-index:99}
+.slide-num{position:fixed;bottom:36px;left:40px;font-size:.85rem;color:var(--muted);z-index:99}
+.hero-img{width:100%;max-width:500px;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:float 4s ease-in-out infinite}
+.hero-img img{width:100%;display:block}
+.er-img{max-width:750px;width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.er-img img{width:100%;display:block;border-radius:16px}
+.badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:600;margin-right:6px}
+.badge-blue{background:rgba(99,102,241,.2);color:#818cf8}
+.badge-green{background:rgba(16,185,129,.2);color:#34d399}
+.badge-orange{background:rgba(245,158,11,.2);color:#fbbf24}
+.badge-red{background:rgba(239,68,68,.2);color:#f87171}
+.badge-purple{background:rgba(139,92,246,.2);color:#a78bfa}
+.flow-steps{display:flex;gap:16px;align-items:center;max-width:1000px;flex-wrap:wrap;justify-content:center}
+.flow-step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 22px;text-align:center;min-width:140px;transition:all .3s}
+.flow-step:hover{border-color:var(--cyan)}
+.flow-step .num{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.flow-step p{font-size:.85rem;color:var(--muted);margin-top:6px}
+.flow-arrow{font-size:1.5rem;color:var(--accent)}
+.highlight-list{list-style:none;max-width:800px;width:100%}
+.highlight-list li{padding:14px 20px;border-left:3px solid var(--accent);margin-bottom:12px;background:rgba(99,102,241,.05);border-radius:0 10px 10px 0;font-size:1rem;color:var(--muted);transition:all .3s}
+.highlight-list li:hover{background:rgba(99,102,241,.1);border-left-color:var(--cyan)}
+.highlight-list li strong{color:#fff}
+.center-text{text-align:center}
+.mb-12{margin-bottom:12px}
+.mb-20{margin-bottom:20px}
+.mb-30{margin-bottom:30px}
+.mb-40{margin-bottom:40px}
+</style>
+</head>
+<body>
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+<div class="progress" id="progress"></div>
+<div class="slide-num" id="slideNum"></div>
+
+<!-- SLIDE 1: Title -->
+<div class="slide active center-text" id="s1">
+  <span class="tag">Database Systems Project</span>
+  <h1>Smart Home Automation System</h1>
+  <p class="subtitle">A comprehensive SQL Server database for managing IoT devices, automation rules, energy monitoring, and real-time alerts</p>
+  <div class="members-grid" style="margin-top:20px">
+    <div class="member"><div class="avatar">YK</div><h4>Yaya M. Kamara</h4></div>
+    <div class="member"><div class="avatar">BT</div><h4>Blessing Tokpah</h4></div>
+    <div class="member"><div class="avatar">MM</div><h4>Michael Y. Momolu Jr</h4></div>
+    <div class="member"><div class="avatar">MD</div><h4>Maxwell Dolokelen</h4></div>
+  </div>
+</div>
+
+<!-- SLIDE 2: Problem & Solution -->
+<div class="slide" id="s2">
+  <div class="grid2">
+    <div>
+      <span class="tag">Introduction</span>
+      <h2>Why Smart Home Automation?</h2>
+      <ul class="highlight-list">
+        <li>🏠 <strong>Growing IoT Market</strong> — Billions of connected devices need centralized management</li>
+        <li>⚡ <strong>Energy Waste</strong> — Households lack visibility into device-level energy costs</li>
+        <li>🔒 <strong>Security Gaps</strong> — Unmonitored devices create vulnerabilities</li>
+        <li>🤖 <strong>Manual Control</strong> — Users need automation to simplify daily routines</li>
+      </ul>
+      <p style="margin-top:20px">Our database provides the <strong style="color:#fff">backbone infrastructure</strong> for a complete smart home platform.</p>
+    </div>
+    <div class="hero-img">
+      <img src="smart_home_hero.png" alt="Smart Home">
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: Architecture Overview -->
+<div class="slide center-text" id="s3">
+  <span class="tag">Architecture</span>
+  <h2>System Overview</h2>
+  <p class="mb-30">Five interconnected tables form the core of our relational database</p>
+  <div class="flow-steps">
+    <div class="flow-step"><div class="num">👤</div><p>Users</p></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="num">📱</div><p>Devices</p></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step"><div class="num">⚙️</div><p>Automation Rules</p></div>
+    <span class="flow-arrow">↗</span>
+    <div class="flow-step"><div class="num">⚡</div><p>Energy Usage</p></div>
+    <span class="flow-arrow">↘</span>
+    <div class="flow-step"><div class="num">🚨</div><p>Alerts</p></div>
+  </div>
+  <div style="margin-top:30px"><img src="database_architecture.png" alt="Architecture" style="max-width:400px;border-radius:16px;opacity:.8;border:1px solid var(--border)"></div>
+</div>
+
+<!-- SLIDE 4: ER Diagram -->
+<div class="slide center-text" id="s4">
+  <span class="tag">Database Design</span>
+  <h2>Entity-Relationship Diagram</h2>
+  <p class="mb-20">Our normalized schema with proper primary keys, foreign keys, and constraints</p>
+  <div class="er-img"><img src="ER_Diagram.png" alt="ER Diagram"></div>
+</div>
+
+<!-- SLIDE 5: Tables Detail -->
+<div class="slide center-text" id="s5">
+  <span class="tag">Schema</span>
+  <h2>Tables &amp; Constraints</h2>
+  <p class="mb-20">Data integrity enforced through CHECK constraints, UNIQUE keys, and foreign keys</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Table</th><th>Primary Key</th><th>Foreign Keys</th><th>Constraints</th></tr>
+      <tr><td><strong>Users</strong></td><td>UserID</td><td>—</td><td><span class="badge badge-blue">UNIQUE Email</span><span class="badge badge-green">CHECK AccessLevel</span></td></tr>
+      <tr><td><strong>Devices</strong></td><td>DeviceID</td><td>—</td><td><span class="badge badge-green">CHECK Type</span><span class="badge badge-orange">DEFAULT Status</span></td></tr>
+      <tr><td><strong>AutomationRules</strong></td><td>RuleID</td><td>DeviceID</td><td><span class="badge badge-purple">CASCADE DELETE</span></td></tr>
+      <tr><td><strong>EnergyUsage</strong></td><td>RecordID</td><td>DeviceID</td><td><span class="badge badge-purple">CASCADE DELETE</span><span class="badge badge-orange">DEFAULT Timestamp</span></td></tr>
+      <tr><td><strong>Alerts</strong></td><td>AlertID</td><td>DeviceID</td><td><span class="badge badge-red">CHECK Severity</span><span class="badge badge-purple">CASCADE DELETE</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- SLIDE 6: Indexes -->
+<div class="slide" id="s6">
+  <div class="grid2">
+    <div>
+      <span class="tag">Performance</span>
+      <h2>Indexing Strategy</h2>
+      <p class="mb-20">6 non-clustered indexes optimize our most frequent query patterns</p>
+      <ul class="highlight-list">
+        <li>📍 <strong>IX_Devices_Location</strong> — Fast device lookup by room</li>
+        <li>🔌 <strong>IX_Devices_Status</strong> — Quick filter for online/offline devices</li>
+        <li>📊 <strong>IX_EnergyUsage_Device_Timestamp</strong> — Optimized time-series queries</li>
+        <li>🚨 <strong>IX_Alerts_ResolutionStatus</strong> — Fast pending alert retrieval</li>
+        <li>⚠️ <strong>IX_Alerts_Severity</strong> — Priority-based alert filtering</li>
+        <li>⚙️ <strong>IX_AutomationRules_DeviceID</strong> — Quick rule lookup per device</li>
+      </ul>
+    </div>
+    <div style="display:flex;align-items:center">
+      <div class="card" style="width:100%">
+        <h4>💡 Why Indexes Matter</h4>
+        <p>Without indexes, SQL Server performs full table scans. Our indexes enable <strong style="color:#22d3ee">seek operations</strong> that are orders of magnitude faster — critical for a system processing real-time sensor data.</p>
+        <div style="margin-top:20px;padding:16px;background:rgba(34,211,238,.08);border-radius:10px;border:1px solid rgba(34,211,238,.2)">
+          <p style="font-size:.85rem;color:var(--cyan)">⚡ Composite index on (DeviceID, Timestamp) enables efficient range queries for energy reports</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Stored Procedures -->
+<div class="slide center-text" id="s7">
+  <span class="tag">Business Logic</span>
+  <h2>Stored Procedures</h2>
+  <p class="mb-20">5 procedures encapsulate core operations with built-in error handling</p>
+  <div class="grid3">
+    <div class="card"><div class="icon">👤</div><h4>usp_AddUser</h4><p>Registers users with TRY/CATCH error handling for duplicate emails</p><span class="badge badge-green">Error Handling</span></div>
+    <div class="card"><div class="icon">📱</div><h4>sp_RegisterDevice</h4><p>Adds new IoT devices with automatic 'Online' status assignment</p><span class="badge badge-blue">Auto Status</span></div>
+    <div class="card"><div class="icon">⚡</div><h4>sp_LogEnergyUsage</h4><p>Calculates cost dynamically: PowerConsumption × CostPerUnit</p><span class="badge badge-orange">Dynamic Calc</span></div>
+    <div class="card"><div class="icon">🚨</div><h4>sp_TriggerAlert</h4><p>Creates device alerts with auto-timestamped 'Pending' status</p><span class="badge badge-red">Auto Timestamp</span></div>
+    <div class="card"><div class="icon">✅</div><h4>sp_ResolveAlert</h4><p>Updates alert status to 'Resolved' completing the alert lifecycle</p><span class="badge badge-purple">Status Update</span></div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Views -->
+<div class="slide center-text" id="s8">
+  <span class="tag">Reporting</span>
+  <h2>Database Views</h2>
+  <p class="mb-20">4 views provide real-time dashboards without complex queries</p>
+  <div class="grid2" style="max-width:900px">
+    <div class="card"><h4>🚨 vw_ActiveAlerts</h4><p>Joins Alerts + Devices to show all pending issues with device type and location</p></div>
+    <div class="card"><h4>📊 vw_MonthlyEnergySummary</h4><p>Aggregates consumption and cost grouped by device, month, and year</p></div>
+    <div class="card"><h4>⚙️ vw_ActiveAutomationRules</h4><p>Lists all active rules linked to their device type and location</p></div>
+    <div class="card"><h4>🔧 vw_DeviceStatusReport</h4><p>Device overview with calculated days since last maintenance via DATEDIFF</p></div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Code Demo -->
+<div class="slide center-text" id="s9">
+  <span class="tag">Live Demo</span>
+  <h2>Code in Action</h2>
+  <p class="mb-20">Example: Adding a user and triggering the error handling</p>
+  <div class="code-block" style="text-align:left"><span class="cm">-- Add a new user successfully</span>
+<span class="kw">EXEC</span> <span class="fn">usp_AddUser</span> <span class="str">'Diana Prince'</span>, <span class="str">'diana@smarthome.com'</span>, <span class="str">'555-0200'</span>, <span class="str">'Admin'</span>;
+<span class="cm">-- Result: "User added successfully."</span>
+
+<span class="cm">-- Try duplicate email → Error handling catches it</span>
+<span class="kw">EXEC</span> <span class="fn">usp_AddUser</span> <span class="str">'Duplicate'</span>, <span class="str">'diana@smarthome.com'</span>, <span class="str">'555-0000'</span>, <span class="str">'Guest'</span>;
+<span class="cm">-- Result: "Error adding user: Violation of UNIQUE KEY constraint..."</span>
+
+<span class="cm">-- Trigger an alert and resolve it</span>
+<span class="kw">EXEC</span> <span class="fn">sp_TriggerAlert</span> <span class="str">1</span>, <span class="str">'Overheating Detected'</span>, <span class="str">'High'</span>;
+<span class="kw">EXEC</span> <span class="fn">sp_ResolveAlert</span> <span class="str">4</span>;
+
+<span class="cm">-- Check active alerts dashboard</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="fn">vw_ActiveAlerts</span>;</div>
+</div>
+
+<!-- SLIDE 10: Backup Strategy -->
+<div class="slide" id="s10">
+  <div class="grid2">
+    <div>
+      <span class="tag">Data Protection</span>
+      <h2>Backup &amp; Recovery</h2>
+      <p class="mb-20">Full Recovery Model ensures zero data loss for continuous IoT telemetry</p>
+      <div class="card mb-12"><h4>🗄️ Full Backup — Daily at 2:00 AM</h4><p>Complete database snapshot as the recovery baseline</p></div>
+      <div class="card mb-12"><h4>📦 Differential — Every 4-6 hours</h4><p>Captures only changes since last full backup</p></div>
+      <div class="card"><h4>📋 Transaction Log — Every 15-30 min</h4><p>Enables point-in-time recovery to the exact minute</p></div>
+    </div>
+    <div style="display:flex;align-items:center">
+      <div class="card" style="width:100%;border-color:var(--orange)">
+        <h4>🔥 Disaster Recovery Scenario</h4>
+        <p class="mb-12">Server failure at <strong style="color:#fff">4:20 PM</strong>:</p>
+        <ul class="highlight-list">
+          <li><strong>Step 1:</strong> Restore Full Backup (2:00 AM) with NORECOVERY</li>
+          <li><strong>Step 2:</strong> Restore Differential (2:00 PM) with NORECOVERY</li>
+          <li><strong>Step 3:</strong> Restore Transaction Logs (2:15–4:15 PM) with RECOVERY</li>
+        </ul>
+        <p style="margin-top:12px;color:var(--green);font-weight:600">✅ Database restored to 4:15 PM — only 5 minutes of data loss</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: Thank You -->
+<div class="slide center-text" id="s11">
+  <span class="tag">Thank You</span>
+  <h1>Questions?</h1>
+  <p class="subtitle">We're ready to demo any part of the system live</p>
+  <div class="members-grid" style="margin-top:30px">
+    <div class="member"><div class="avatar" style="background:linear-gradient(135deg,var(--green),var(--cyan))">YK</div><h4>Yaya M. Kamara</h4></div>
+    <div class="member"><div class="avatar" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">BT</div><h4>Blessing Tokpah</h4></div>
+    <div class="member"><div class="avatar" style="background:linear-gradient(135deg,var(--orange),var(--red))">MM</div><h4>Michael Y. Momolu Jr</h4></div>
+    <div class="member"><div class="avatar" style="background:linear-gradient(135deg,var(--cyan),var(--accent))">MD</div><h4>Maxwell Dolokelen</h4></div>
+  </div>
+  <p style="margin-top:30px;font-size:.9rem">Smart Home Automation System &bull; Database Systems Project &bull; 2026</p>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()" title="Previous">◀</button>
+  <button onclick="nextSlide()" title="Next">▶</button>
+</div>
+
+<script>
+let current=0;
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+function showSlide(n){
+  slides[current].classList.remove('active');
+  current=(n+total)%total;
+  slides[current].classList.add('active');
+  document.getElementById('progress').style.width=((current+1)/total*100)+'%';
+  document.getElementById('slideNum').textContent=`${current+1} / ${total}`;
+}
+function nextSlide(){showSlide(current+1)}
+function prevSlide(){showSlide(current-1)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')nextSlide();
+  if(e.key==='ArrowLeft')prevSlide();
+  if(e.key==='f'||e.key==='F'){
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+showSlide(0);
+</script>
+</body>
+</html>
